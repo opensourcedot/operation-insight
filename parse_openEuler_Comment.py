@@ -23,7 +23,10 @@ def parse_and_sum_contributions(source_file_path, dest_file_path):
         # 将企业名称和对应的贡献数据总和组合成一个新的DataFrame
         result_df = pd.DataFrame({'Company': company_names, 'TotalContribution': contributions_sum})
 
-        result_df.to_excel(dest_file_path, index=False)
+        total_contribution = result_df['TotalContribution'][1:].sum(axis=0)
+        result_df_new = result_df.assign(Percentage = result_df['TotalContribution']/total_contribution * 100)
+
+        result_df_new.to_excel(dest_file_path, index=False)
         print(f"结果已成功保存到Excel文件：{dest_file_path}")
 
     except Exception as e:
